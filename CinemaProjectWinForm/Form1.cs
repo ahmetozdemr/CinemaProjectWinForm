@@ -9,17 +9,32 @@ namespace CinemaProjectWinForm
         List<Category> _categories;
         List<Film> _films;
         List<Room> _rooms;
+        List<Seat> _seats;
         public Form1()
         {
             InitializeComponent();
 
             _rooms = new List<Room>()
             {
-                new Room() {Id=1,RoomName="Salon1",NumOfRoom=12},
-                new Room() {Id=2,RoomName="Salon2",NumOfRoom=12},
-                new Room() {Id=3,RoomName="Salon3",NumOfRoom=12},
-                new Room() {Id=4,RoomName="Salon4",NumOfRoom=12}
+                new Room() {Id=1,RoomName="Salon1"},
+                new Room() {Id=2,RoomName="Salon2"},
+                new Room() {Id=3,RoomName="Salon3"},
+                new Room() {Id=4,RoomName="Salon4"}
             };
+
+            _seats = new List<Seat>()
+            {
+                new Seat() {Id=1,CheckFill=true,MovieTheaterId=1},
+                new Seat() {Id=2,CheckFill=true,MovieTheaterId=1},
+                new Seat() {Id=3,CheckFill=true,MovieTheaterId=1},
+                new Seat() {Id=4,CheckFill=true,MovieTheaterId=1},
+                new Seat() {Id=5,CheckFill=true,MovieTheaterId=1}
+            };
+            foreach (var item in _seats)
+            {
+                comboBox2.Items.Add("Koltuk " + item.Id);
+            }
+
             _categories = new List<Category>()
             {
                 new Category(){Id=1,Name="Aksiyon"},
@@ -46,8 +61,6 @@ namespace CinemaProjectWinForm
                 listBox1.Items.Add(item.Name);
             }
 
-
-            comboBox2.Items.Add("Koltuk ");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -109,8 +122,21 @@ namespace CinemaProjectWinForm
 
         private void comboBox2_MouseMove(object sender, MouseEventArgs e)
         {
-          
 
+
+        }
+
+        private void buttonEkle_Click(object sender, EventArgs e)
+        {
+
+
+            string[] row = { textAd.Text, textSoyad.Text, textFilmName.Text, textPrice.Text, comboBox2.Text };
+            var record = new ListViewItem(row);
+            listView1.Items.Add(record);
+
+            _seats[comboBox2.SelectedIndex].CheckFill = false;
+
+            comboBox2.Items[comboBox2.SelectedIndex] = "Satýldý";
         }
     }
 }

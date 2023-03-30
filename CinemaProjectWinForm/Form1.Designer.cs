@@ -316,7 +316,7 @@
             // Fiyat
             // 
             Fiyat.Text = "Fiyat";
-            Fiyat.Width = 40;
+            Fiyat.Width = 50;
             // 
             // KoltukNo
             // 
@@ -376,6 +376,7 @@
             buttonEkle.TabIndex = 25;
             buttonEkle.Text = "Ekle";
             buttonEkle.UseVisualStyleBackColor = false;
+            buttonEkle.Click += buttonEkle_Click;
             // 
             // label6
             // 
