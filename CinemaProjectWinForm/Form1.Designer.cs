@@ -58,11 +58,13 @@
             Film = new ColumnHeader();
             Fiyat = new ColumnHeader();
             KoltukNo = new ColumnHeader();
+            SalonNo = new ColumnHeader();
             comboBox2 = new ComboBox();
             panel4 = new Panel();
             buttonCikar = new Button();
             buttonEkle = new Button();
             label6 = new Label();
+            labelControl = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             panel4.SuspendLayout();
@@ -169,7 +171,6 @@
             listBox1.ForeColor = SystemColors.InfoText;
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 16;
-            listBox1.Items.AddRange(new object[] { "John Wick 4" });
             listBox1.Location = new Point(18, 26);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(141, 164);
@@ -287,7 +288,7 @@
             // 
             // listView1
             // 
-            listView1.Columns.AddRange(new ColumnHeader[] { Ad, Soyad, Film, Fiyat, KoltukNo });
+            listView1.Columns.AddRange(new ColumnHeader[] { Ad, Soyad, Film, Fiyat, KoltukNo, SalonNo });
             listView1.LargeImageList = ımageList1;
             listView1.Location = new Point(21, 335);
             listView1.Name = "listView1";
@@ -331,7 +332,6 @@
             comboBox2.Size = new Size(111, 23);
             comboBox2.TabIndex = 23;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
-            comboBox2.MouseMove += comboBox2_MouseMove;
             // 
             // panel4
             // 
@@ -388,11 +388,21 @@
             label6.TabIndex = 24;
             label6.Text = "Koltuk Seç";
             // 
+            // labelControl
+            // 
+            labelControl.Location = new Point(12, 202);
+            labelControl.Name = "labelControl";
+            labelControl.Size = new Size(293, 253);
+            labelControl.TabIndex = 25;
+            labelControl.Text = "label7";
+            labelControl.Click += labelControl_Click;
+            // 
             // Form1
             // 
             AutoScaleMode = AutoScaleMode.None;
             BackColor = SystemColors.Menu;
             ClientSize = new Size(771, 482);
+            Controls.Add(labelControl);
             Controls.Add(panel4);
             Controls.Add(groupBox1);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
@@ -442,5 +452,7 @@
         private Label label6;
         private Button buttonCikar;
         private Button buttonEkle;
+        private Label labelControl;
+        private ColumnHeader SalonNo;
     }
 }

@@ -9,31 +9,17 @@ namespace CinemaProjectWinForm
         List<Category> _categories;
         List<Film> _films;
         List<Room> _rooms;
-        List<Seat> _seats;
         public Form1()
         {
             InitializeComponent();
 
             _rooms = new List<Room>()
             {
-                new Room() {Id=1,RoomName="Salon1"},
-                new Room() {Id=2,RoomName="Salon2"},
-                new Room() {Id=3,RoomName="Salon3"},
-                new Room() {Id=4,RoomName="Salon4"}
+                new Room("Room 1",5),
+                new Room("Room 2",5),
+                new Room("Room 3",5),
+                new Room("Room 4",5)
             };
-
-            _seats = new List<Seat>()
-            {
-                new Seat() {Id=1,CheckFill=true,MovieTheaterId=1},
-                new Seat() {Id=2,CheckFill=true,MovieTheaterId=1},
-                new Seat() {Id=3,CheckFill=true,MovieTheaterId=1},
-                new Seat() {Id=4,CheckFill=true,MovieTheaterId=1},
-                new Seat() {Id=5,CheckFill=true,MovieTheaterId=1}
-            };
-            foreach (var item in _seats)
-            {
-                comboBox2.Items.Add("Koltuk " + item.Id);
-            }
 
             _categories = new List<Category>()
             {
@@ -53,14 +39,62 @@ namespace CinemaProjectWinForm
                 new Film() { Id =4,Name="Çizmeli Kedi",CategotyId=4,Price=80,Time=" 93dk",FilmImage=@"C:\\Users\\ozder\\OneDrive\\Masaüstü\\images\\4.jpg" ,MovieTheaterId=4},
             };
 
-
-
             listBox1.Items.Clear();
             foreach (var item in _films)
             {
                 listBox1.Items.Add(item.Name);
             }
 
+        }
+        private void DisplayRooms(string roomName)
+        {
+            labelControl.Text = "Rooms and Seats\n";
+            foreach (var room in _rooms)
+            {
+                labelControl.Text = labelControl.Text + room.Name + " :\n";
+                if (room.Name == roomName)
+                {
+                    comboBox2.Items.Clear();
+                    foreach (var seat in room.Seats)
+                    {
+                        comboBox2.Items.Add((seat.Reserved ? "Satýldý" : "Koltuk") + seat.Number);
+                        labelControl.Text = labelControl.Text + seat.Number + (seat.Reserved ? "reserved" : "") + "\n";
+                    }
+                }
+
+
+            }
+        }
+
+        private bool ReserveSeat(string roomName, int seatNumber)
+        {
+            Room room = _rooms.Find(r => r.Name == roomName);
+            if (room != null)
+            {
+                Seat seat = room.Seats.Find(s => s.Number == seatNumber + 1);
+                if (seat != null && !seat.Reserved)
+                {
+                    seat.Reserved = true;
+                    labelControl.Text = "Seat " + seatNumber + " in " + roomName + " is already reserved.\n";
+                    return true;
+                }
+                else
+                {
+                    labelControl.Text = "Seat " + seatNumber + " in " + roomName + " is already reserved or does not exist.\n";
+                    return false;
+                }
+            }
+            else
+            {
+                labelControl.Text = "Room " + roomName + " does not exist.\n";
+                return false;
+            }
+        }
+
+        private void CreateRoom(string name, int numSeats)
+        {
+            _rooms.Add(new Room(name, numSeats));
+            MessageBox.Show("Room" + name + " with " + numSeats + " seats has been created.\n");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -70,7 +104,7 @@ namespace CinemaProjectWinForm
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            pictureBox1.Image = Image.FromFile(@"C:\\Users\\ozder\\Downloads\\images\\1.jpg");
+            // pictureBox1.Image = Image.FromFile(@"C:\\Users\\ozder\\OneDrive\\Masaüstü\\images\\3.jpg");
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,10 +116,11 @@ namespace CinemaProjectWinForm
         {
 
             textFilmName.Text = _films[listBox1.SelectedIndex].Name;
-            textFilmCategory.Text = _films[listBox1.SelectedIndex].CategotyId.ToString();
+            //textFilmCategory.Text = _films[listBox1.SelectedIndex].CategotyId.ToString();
             textTime.Text = _films[listBox1.SelectedIndex].Time;
             textPrice.Text = _films[listBox1.SelectedIndex].Price.ToString() + " TL";
             pictureBox1.Image = Image.FromFile(_films[listBox1.SelectedIndex].FilmImage);
+
 
             var result = _categories.Where(c => c.Id == _films[listBox1.SelectedIndex].CategotyId);
             foreach (var item in result)
@@ -93,6 +128,19 @@ namespace CinemaProjectWinForm
                 textFilmCategory.Text = item.Name;
             }
 
+            DisplayRooms(_rooms[listBox1.SelectedIndex].Name);
+
+            //switch (switch_on)
+            //{
+            //    default:
+            //}
+
+            // DisplayRooms();
+
+            //foreach (var item in _seats)
+            //{
+            //    comboBox2.Items.Add("Koltuk " + item.Id);
+            //}
 
             //var result2 = _rooms.Where(r => r.Id == _films[listBox1.SelectedIndex].MovieTheaterId);
 
@@ -120,23 +168,25 @@ namespace CinemaProjectWinForm
 
         }
 
-        private void comboBox2_MouseMove(object sender, MouseEventArgs e)
-        {
-
-
-        }
-
         private void buttonEkle_Click(object sender, EventArgs e)
         {
+            ReserveSeat(_rooms[listBox1.SelectedIndex].Name, comboBox2.SelectedIndex);
 
-
-            string[] row = { textAd.Text, textSoyad.Text, textFilmName.Text, textPrice.Text, comboBox2.Text };
+            string[] row = { textAd.Text, textSoyad.Text, textFilmName.Text, textPrice.Text, comboBox2.Text, _rooms[listBox1.SelectedIndex].Name };
             var record = new ListViewItem(row);
             listView1.Items.Add(record);
 
-            _seats[comboBox2.SelectedIndex].CheckFill = false;
 
-            comboBox2.Items[comboBox2.SelectedIndex] = "Satýldý";
+            // comboBox2.Items.Clear();
+
+            // _seats[comboBox2.SelectedIndex].CheckFill = false;
+
+            //comboBox2.Items[comboBox2.SelectedIndex] = "Satýldý";
+        }
+
+        private void labelControl_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

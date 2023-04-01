@@ -8,8 +8,18 @@ namespace CinemaProjectWinForm
 {
     public class Room
     {
-        public int Id { get; set; }
-        public string RoomName { get; set; }
-        public int NumOfRoom { get; set; }
+        public string Name { get; set; }
+        public List<Seat> Seats { get; set; }
+
+        public Room(string name, int numSeats)
+        {
+            Name = name;
+            Seats = new List<Seat>();
+
+            for (int i = 1; i < numSeats; i++)
+            {
+                Seats.Add(new Seat(i));
+            }
+        }
     }
 }

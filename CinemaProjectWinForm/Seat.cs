@@ -8,8 +8,14 @@ namespace CinemaProjectWinForm
 {
     public class Seat
     {
-        public int Id { get; set; }
-        public int MovieTheaterId { get; set; }
-        public bool CheckFill { get; set; }
+        public int Number { get; set; }
+        public bool Reserved { get; set; }
+
+        public Seat(int number)
+        {
+            Number = number;
+            Reserved = false;
+        }
+
     }
 }
